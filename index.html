@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Google Docs</title>
+</head>
+<body>
+    <div>
+        <button id="undo" onclick='undo()'>undo</button>
+        <button id="redo" onclick='redo()'>redo</button>
+        <button id="print" onclick='print()'>print</button>
+        <button id="paint-format">paint format</button>
+    </div>
+
+    <div id="zoom">
+        <label>
+            Zoom
+            <select id="zoom">
+                <option value="50">50%</option>
+                <option value="75">75%</option>
+                <option value="100" selected>100%</option>
+                <option value="120">120%</option>
+                <option value="150">150%</option>
+                <option value="200">200%</option>
+            </select>
+        </label>
+    </div>
+
+    <div>
+        <label for="">
+            Font Family
+            <select id="font-family" onclick="changeFontFamily()">
+                <option value="Arial" selected>Arial</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Roboto">Roboto</option>
+            </select>
+        </label>
+    </div>
+
+    <div>
+        <label>
+            Font Size
+            <select id="font-size" onchange='changeFontSize()'>
+                <option value=1>9</option>
+                <option value=2>11</option>
+                <option value=3 selected>13</option>
+                <option value=4>15</option>
+                <option value=5>17</option>
+                <option value=6>19</option>
+                <option value=7>21</option>
+            </select>
+        </label>
+    </div>
+
+    <div id="text-decoration">
+        <button onclick="bold()">Bold</button>
+        <button onclick="italic()">Italic</button>
+        <button onclick="underline()">Underline</button>
+        <label>
+            Text-color
+            <select id="text-color"  onchange='changeTextColor()'>
+                <option value="#ff0000">Red</option>
+                <option value="#0000ff">Blue</option>
+                <option value="#000000">Black</option>
+                <option value="#ffffff">White</option>
+                <option value="#ffa500">Orange</option>
+                <option value="#00ff00">Green</option>
+            </select>
+        </label>
+        <label>
+            Highlighting Color
+            <select id="highlighting-color" onchange="changeHighlightingColor()">
+                <option value="#ff0000">Red</option>
+                <option value="#0000ff">Blue</option>
+                <option value="#000000">Black</option>
+                <option value="#ffffff">White</option>
+                <option value="#ffa500">Orange</option>
+                <option value="#00ff00">Green</option>
+            </select>
+        </label>    
+    </div>
+
+    <div>
+        <button>Insert Link</button>
+        <input type="file"/>
+
+        <button>Insert Image</button>
+        <input type="file" name=""/>
+    </div>
+
+    <div id="aling">
+        <button onclick="alignLeft()">Left Align</button>
+        <button onclick="alignCenter()">Center Align</button>
+        <button onclick="alignRight()">Right Align</button>
+    </div>
+
+    <div>
+        <button onclick="insertOrderedList()">Numbered List</button>
+        <button onclick="insertUnorderedList()">Bulleted List</button>
+        <button onclick='indent()'>Decrease Indent</button>
+        <button onclick='outdent()'>Increase Indent</button>
+    </div>
+
+    <div contenteditable="true">
+
+    </div>
+
+    <script>
+        
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
