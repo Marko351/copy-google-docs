@@ -4,20 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <title>Google Docs</title>
+    <style>
+        *{
+            padding: 2px;
+        }
+        div{
+            /* display: inline-block; */
+            margin: 2px 8px;
+        }
+        #writing-area{
+            display: block;
+        }
+    </style>
 </head>
 <body>
     <div>
-        <button id="undo" onclick='undo()'>undo</button>
-        <button id="redo" onclick='redo()'>redo</button>
-        <button id="print" onclick='print()'>print</button>
-        <button id="paint-format">paint format</button>
+        <button onclick='undo()'> <i class="material-icons">undo</i></button>
+        <button onclick='redo()'><i class="material-icons">redo</i></button>
+        <button onclick='print()'><i class="material-icons">print</i></button>
+        <button><i class="material-icons">format_paint</i></button>
+        <button onclick="deleteHandler()"><i class="material-icons">delete</i></button>
+        <button onclick="cutHandler()">cut</button>
+        <button onclick="copyHandler()">copy</button>
+        <button onclick="striketrought()"><i class="material-icons">strikethrough_s</i></button>
+        <button onclick="selectedAll()"><i class="material-icons">select_all </i></button>
     </div>
 
-    <div id="zoom">
+    <div>
         <label>
-            Zoom
-            <select id="zoom">
+            <select id="zoom" onchange="zoom()">
                 <option value="50">50%</option>
                 <option value="75">75%</option>
                 <option value="100" selected>100%</option>
@@ -29,8 +47,7 @@
     </div>
 
     <div>
-        <label for="">
-            Font Family
+        <label>
             <select id="font-family" onclick="changeFontFamily()">
                 <option value="Arial" selected>Arial</option>
                 <option value="Georgia">Georgia</option>
@@ -41,7 +58,6 @@
 
     <div>
         <label>
-            Font Size
             <select id="font-size" onchange='changeFontSize()'>
                 <option value=1>9</option>
                 <option value=2>11</option>
@@ -55,9 +71,9 @@
     </div>
 
     <div id="text-decoration">
-        <button onclick="bold()">Bold</button>
-        <button onclick="italic()">Italic</button>
-        <button onclick="underline()">Underline</button>
+        <button onclick="bold()"><i class="material-icons">format_bold</i></button>
+        <button onclick="italic()"><i class="material-icons">format_italic</i></button>
+        <button onclick="underline()"><i class="material-icons">format_underlined</i></button>
         <label>
             Text-color
             <select id="text-color"  onchange='changeTextColor()'>
@@ -83,33 +99,42 @@
     </div>
 
     <div>
-        <button>Insert Link</button>
-        <input type="file"/>
+        <button onclick="insertLink()"><i class="material-icons">insert_link</i></button>
+        <input type="text" id="link"/>
 
-        <button>Insert Image</button>
-        <input type="file" name=""/>
-    </div>
-
-    <div id="aling">
-        <button onclick="alignLeft()">Left Align</button>
-        <button onclick="alignCenter()">Center Align</button>
-        <button onclick="alignRight()">Right Align</button>
+        <button onclick="insertImage()"><i class="material-icons">insert_photo</i></button>
+        <input type="text" id="linkImage"/>
     </div>
 
     <div>
-        <button onclick="insertOrderedList()">Numbered List</button>
-        <button onclick="insertUnorderedList()">Bulleted List</button>
-        <button onclick='indent()'>Decrease Indent</button>
-        <button onclick='outdent()'>Increase Indent</button>
+        <button onclick="alignLeft()"><i class="material-icons">format_align_left</i></button>
+        <button onclick="alignCenter()"><i class="material-icons">format_align_center</i></button>
+        <button onclick="alignRight()"><i class="material-icons">format_align_right</i></button>
+        <button onclick="alignJustify()"><i class="material-icons">format_align_justify</i></button>
     </div>
 
-    <div contenteditable="true">
+    <div>
+        <label>
+            Line spacing
+            <select id="lineSpacing">
+                <option value="">1.15</option>
+                <option value="">1.5</option>
+                <option value="">double</option>
+            </select>
+        </label>
+    </div>
+
+    <div>
+        <button onclick="insertOrderedList()"><i class="material-icons">format_list_numbered</i></button>
+        <button onclick="insertUnorderedList()"><i class="material-icons">format_list_bulleted</i></button>
+        <button onclick='indent()'><i class="material-icons">format_indent_decrease</i></button>
+        <button onclick='outdent()'><i class="material-icons">format_indent_increase</i></button>
+    </div>
+
+    <div contenteditable="true" id="writing-area" >
 
     </div>
 
-    <script>
-        
-    </script>
 
     <script src="script.js"></script>
 </body>

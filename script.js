@@ -1,8 +1,8 @@
- function undo(){
+ const undo = () => {
      document.execCommand('undo', false, null);
  }
 
- function redo(){
+ const redo = () => {
     document.execCommand('redo', false, null);
 }
 
@@ -10,33 +10,57 @@ const print = () => {
     window.print();
 }
 
-function bold(){
+const deleteHandler = () => {
+    document.execCommand('delete', false, null)
+}
+
+const cutHandler = () => {
+    document.execCommand('cut', false, null);
+}
+
+const copyHandler = () => {
+    document.execCommand('copy', false, null);
+}
+
+const striketrought = () => {
+    document.execCommand('strikeThrough', false, null); 
+}
+
+const selectedAll = () => {
+    document.execCommand('selectAll', false, null);
+}
+
+const bold = () => {
     document.execCommand('bold', false, null);
 }
 
-function italic(){
+const italic = () => {
     document.execCommand('italic', false, null);
 }
 
-function underline(){
+const underline = () => {
     document.execCommand('underline', false, null);
 }
 
-function changeFontFamily(){
+const changeFontFamily = () => {
     var value = document.getElementById('font-family').value;
     document.execCommand('fontName', false, value);
 }
 
-function alignLeft(){
+const alignLeft = () => {
     document.execCommand('justifyLeft',false, null);
 }
 
-function alignCenter(){
+const alignCenter = () => {
     document.execCommand('justifyCenter',false, null);
 }
 
-function alignRight(){
+const alignRight = () => {
     document.execCommand('justifyRight',false, null);
+}
+
+const alignJustify = () => {
+    document.execCommand('justifyFull', false, null);
 }
 
 const changeFontSize = () => {
@@ -68,4 +92,39 @@ const insertOrderedList = () => {
 
 const insertUnorderedList = () => {
     document.execCommand('insertUnorderedList', false, null);
+}
+
+const zoom = () => {
+    let zoom = document.getElementById('zoom').value;
+    let writingArea = document.getElementById('writing-area');
+    if(zoom){
+        zoom = zoom / 100;
+    }
+
+    writingArea.style.transform = `scale(${zoom})`;
+    if(zoom > 1){
+        writingArea.style.transformOrigin = `top left`;
+    }else{
+        writingArea.style.transformOrigin = `center`;
+    }
+    
+
+}
+
+const insertLink = () => {
+    let link = document.getElementById('link').value;
+    document.execCommand('createLink', false, link);
+    editableFalse();
+}
+
+const editableFalse = () => {
+    let a = document.getElementsByTagName('a');
+    for(let i = 0; i<a.length; i++){
+        a[i].setAttribute("contenteditable", false);    
+    }
+}
+
+const insertImage = () => {
+    let linkImage = document.getElementById('linkImage').value;
+    document.execCommand('insertImage', false, linkImage);
 }
