@@ -1,100 +1,90 @@
- const undo = () => {
+const controls={
+undo() {
      document.execCommand('undo', false, null);
- }
-
- const redo = () => {
+},
+redo() {
     document.execCommand('redo', false, null);
-}
-
-const print = () => {
+},
+print() {
     window.print();
-}
-
-const deleteHandler = () => {
+},
+deleteHandler() {
     document.execCommand('delete', false, null)
-}
-
-const cutHandler = () => {
+},
+cutHandler() {
     document.execCommand('cut', false, null);
-}
-
-const copyHandler = () => {
+},
+copyHandler() {
     document.execCommand('copy', false, null);
-}
-
-const striketrought = () => {
+},
+striketrought() {
     document.execCommand('strikeThrough', false, null); 
-}
-
-const selectedAll = () => {
+},
+selectedAll() {
     document.execCommand('selectAll', false, null);
-}
-
-const bold = () => {
+},
+subscript() {
+    document.execCommand('subscript', false, null)
+},
+superscript() {
+    document.execCommand('superscript', false, null)
+},
+insertLine() {
+    document.execCommand('insertHorizontalRule', false, null);
+},
+bold() {
     document.execCommand('bold', false, null);
-}
-
-const italic = () => {
+},
+italic() {
     document.execCommand('italic', false, null);
-}
-
-const underline = () => {
+},
+underline() {
     document.execCommand('underline', false, null);
-}
-
-const changeFontFamily = () => {
+},
+changeFontFamily() {
     var value = document.getElementById('font-family').value;
     document.execCommand('fontName', false, value);
-}
-
-const alignLeft = () => {
+},
+alignLeft() {
     document.execCommand('justifyLeft',false, null);
-}
-
-const alignCenter = () => {
+},
+alignCenter() {
     document.execCommand('justifyCenter',false, null);
-}
-
-const alignRight = () => {
+},
+alignRight() {
     document.execCommand('justifyRight',false, null);
-}
-
-const alignJustify = () => {
+},
+alignJustify() {
     document.execCommand('justifyFull', false, null);
-}
-
-const changeFontSize = () => {
+},
+insertTable(){
+    document.execCommand('enableInlineTableEditing', false, null);
+},
+changeFontSize() {
     const value = document.getElementById('font-size').value;
     document.execCommand('fontSize', false, value);
-}
-
-const changeTextColor = () => {
+},
+changeTextColor() {
     const color = document.getElementById('text-color').value;
     document.execCommand('foreColor', false, color);
-}
-
-const indent = () => {
+},
+indent() {
     document.execCommand('indent', false, null);
-}
-
-const outdent = () => {
+},
+outdent() {
     document.execCommand('outdent', false, null);
-}
-
-const changeHighlightingColor = () => {
+},
+changeHighlightingColor() {
     const color = document.getElementById('highlighting-color').value;
     document.execCommand('hiliteColor', false, color);
-}
-
-const insertOrderedList = () => {
+},
+insertOrderedList() {
     document.execCommand('insertOrderedList', false, null);
-}
-
-const insertUnorderedList = () => {
+},
+insertUnorderedList() {
     document.execCommand('insertUnorderedList', false, null);
-}
-
-const zoom = () => {
+},
+zoom() {
     let zoom = document.getElementById('zoom').value;
     let writingArea = document.getElementById('writing-area');
     if(zoom){
@@ -107,24 +97,41 @@ const zoom = () => {
     }else{
         writingArea.style.transformOrigin = `center`;
     }
-    
-
-}
-
-const insertLink = () => {
+},
+insertLink() {
     let link = document.getElementById('link').value;
     document.execCommand('createLink', false, link);
     editableFalse();
-}
-
-const editableFalse = () => {
+},
+unlink(){
+    document.execCommand('unlink', false, null);
+},
+editableFalse() {
     let a = document.getElementsByTagName('a');
     for(let i = 0; i<a.length; i++){
         a[i].setAttribute("contenteditable", false);    
     }
-}
-
-const insertImage = () => {
+},
+insertImage() {
     let linkImage = document.getElementById('linkImage').value;
     document.execCommand('insertImage', false, linkImage);
+},
+lineSpacing() {
+    const lineSpace = document.getElementById('lineSpacing').value;
+    const writingArea = document.getElementById('writing-area');
+    writingArea.style.lineHeight = lineSpace;
+},
+save() {
+    const savingContent = document.getElementById('writing-area').innerHTML;
+    localStorage.setItem('myItems', savingContent);
 }
+}
+
+const getContent = () => {
+    document.getElementById('writing-area').innerHTML = localStorage.getItem('myItems');
+}
+
+
+
+
+

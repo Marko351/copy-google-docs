@@ -20,22 +20,25 @@
         }
     </style>
 </head>
-<body>
+<body onload="getContent()">
     <div>
-        <button onclick='undo()'> <i class="material-icons">undo</i></button>
-        <button onclick='redo()'><i class="material-icons">redo</i></button>
-        <button onclick='print()'><i class="material-icons">print</i></button>
+        <button onclick='controls.undo()'> <i class="material-icons">undo</i></button>
+        <button onclick='controls.redo()'><i class="material-icons">redo</i></button>
+        <button onclick='controls.print()'><i class="material-icons">print</i></button>
         <button><i class="material-icons">format_paint</i></button>
-        <button onclick="deleteHandler()"><i class="material-icons">delete</i></button>
-        <button onclick="cutHandler()">cut</button>
-        <button onclick="copyHandler()">copy</button>
-        <button onclick="striketrought()"><i class="material-icons">strikethrough_s</i></button>
-        <button onclick="selectedAll()"><i class="material-icons">select_all </i></button>
+        <button onclick="controls.deleteHandler()"><i class="material-icons">delete</i></button>
+        <button onclick="controls.cutHandler()">cut</button>
+        <button onclick="controls.copyHandler()">copy</button>
+        <button onclick="controls.striketrought()"><i class="material-icons">strikethrough_s</i></button>
+        <button onclick="controls.selectedAll()"><i class="material-icons">select_all </i></button>
+        <button onclick="controls.subscript()">subscript</button>
+        <button onclick="controls.superscript()">superscript</button>
+        <button onclick="controls.insertLine()">insert_line</button>
     </div>
 
     <div>
         <label>
-            <select id="zoom" onchange="zoom()">
+            <select id="zoom" onchange="controls.zoom()">
                 <option value="50">50%</option>
                 <option value="75">75%</option>
                 <option value="100" selected>100%</option>
@@ -48,7 +51,7 @@
 
     <div>
         <label>
-            <select id="font-family" onclick="changeFontFamily()">
+            <select id="font-family" onclick="controls.changeFontFamily()">
                 <option value="Arial" selected>Arial</option>
                 <option value="Georgia">Georgia</option>
                 <option value="Roboto">Roboto</option>
@@ -58,7 +61,7 @@
 
     <div>
         <label>
-            <select id="font-size" onchange='changeFontSize()'>
+            <select id="font-size" onchange='controls.changeFontSize()'>
                 <option value=1>9</option>
                 <option value=2>11</option>
                 <option value=3 selected>13</option>
@@ -71,12 +74,12 @@
     </div>
 
     <div id="text-decoration">
-        <button onclick="bold()"><i class="material-icons">format_bold</i></button>
-        <button onclick="italic()"><i class="material-icons">format_italic</i></button>
-        <button onclick="underline()"><i class="material-icons">format_underlined</i></button>
+        <button onclick="controls.bold()"><i class="material-icons">format_bold</i></button>
+        <button onclick="controls.italic()"><i class="material-icons">format_italic</i></button>
+        <button onclick="controls.underline()"><i class="material-icons">format_underlined</i></button>
         <label>
             Text-color
-            <select id="text-color"  onchange='changeTextColor()'>
+            <select id="text-color"  onchange='controls.changeTextColor()'>
                 <option value="#ff0000">Red</option>
                 <option value="#0000ff">Blue</option>
                 <option value="#000000">Black</option>
@@ -87,7 +90,7 @@
         </label>
         <label>
             Highlighting Color
-            <select id="highlighting-color" onchange="changeHighlightingColor()">
+            <select id="highlighting-color" onchange="controls.changeHighlightingColor()">
                 <option value="#ff0000">Red</option>
                 <option value="#0000ff">Blue</option>
                 <option value="#000000">Black</option>
@@ -99,36 +102,44 @@
     </div>
 
     <div>
-        <button onclick="insertLink()"><i class="material-icons">insert_link</i></button>
+        <button onclick="controls.insertLink()"><i class="material-icons">insert_link</i></button>
         <input type="text" id="link"/>
 
-        <button onclick="insertImage()"><i class="material-icons">insert_photo</i></button>
+        <button onclick="controls.unlink()">unlink</button>
+
+        <button onclick="controls.insertImage()"><i class="material-icons">insert_photo</i></button>
         <input type="text" id="linkImage"/>
     </div>
 
     <div>
-        <button onclick="alignLeft()"><i class="material-icons">format_align_left</i></button>
-        <button onclick="alignCenter()"><i class="material-icons">format_align_center</i></button>
-        <button onclick="alignRight()"><i class="material-icons">format_align_right</i></button>
-        <button onclick="alignJustify()"><i class="material-icons">format_align_justify</i></button>
+        <button onclick="controls.alignLeft()"><i class="material-icons">format_align_left</i></button>
+        <button onclick="controls.alignCenter()"><i class="material-icons">format_align_center</i></button>
+        <button onclick="controls.alignRight()"><i class="material-icons">format_align_right</i></button>
+        <button onclick="controls.alignJustify()"><i class="material-icons">format_align_justify</i></button>
+        <button onclick="controls.insertTable()">insert_table</button>
     </div>
 
     <div>
         <label>
             Line spacing
-            <select id="lineSpacing">
-                <option value="">1.15</option>
-                <option value="">1.5</option>
-                <option value="">double</option>
+            <select id="lineSpacing" onchange="controls.lineSpacing()">
+                <option value="1">single</option>
+                <option value="1.15">1.15</option>
+                <option value="1.5">1.5</option>
+                <option value="2">double</option>
             </select>
         </label>
     </div>
 
     <div>
-        <button onclick="insertOrderedList()"><i class="material-icons">format_list_numbered</i></button>
-        <button onclick="insertUnorderedList()"><i class="material-icons">format_list_bulleted</i></button>
-        <button onclick='indent()'><i class="material-icons">format_indent_decrease</i></button>
-        <button onclick='outdent()'><i class="material-icons">format_indent_increase</i></button>
+        <button onclick="controls.insertOrderedList()"><i class="material-icons">format_list_numbered</i></button>
+        <button onclick="controls.insertUnorderedList()"><i class="material-icons">format_list_bulleted</i></button>
+        <button onclick='controls.indent()'><i class="material-icons">format_indent_decrease</i></button>
+        <button onclick='controls.outdent()'><i class="material-icons">format_indent_increase</i></button>
+    </div>
+
+    <div>
+        <button onclick="controls.save()">save</button>
     </div>
 
     <div contenteditable="true" id="writing-area" >
