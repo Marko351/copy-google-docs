@@ -8,19 +8,10 @@
       rel="stylesheet">
     <title>Google Docs</title>
     <style>
-        *{
-            padding: 2px;
-        }
-        div{
-            /* display: inline-block; */
-            margin: 2px 8px;
-        }
-        #writing-area{
-            display: block;
-        }
+        
     </style>
 </head>
-<body onload="getContent()">
+<body onload="controls.getContent()">
     <div>
         <button onclick='controls.undo()'> <i class="material-icons">undo</i></button>
         <button onclick='controls.redo()'><i class="material-icons">redo</i></button>
@@ -34,6 +25,8 @@
         <button onclick="controls.subscript()">subscript</button>
         <button onclick="controls.superscript()">superscript</button>
         <button onclick="controls.insertLine()">insert_line</button>
+        <button onclick="controls.paste()">paste</button>
+        <!-- <button onclick="controls.plainPaste()">plain_paste</button> -->
     </div>
 
     <div>
@@ -57,20 +50,32 @@
                 <option value="Roboto">Roboto</option>
             </select>
         </label>
+        <button onclick="controls.insertTable()">insert_table</button> 
+        <input type="number" id="numOfRow">
+        <input type="number" id="numOfCell">
     </div>
 
     <div>
         <label>
             <select id="font-size" onchange='controls.changeFontSize()'>
-                <option value=1>9</option>
-                <option value=2>11</option>
-                <option value=3 selected>13</option>
-                <option value=4>15</option>
-                <option value=5>17</option>
-                <option value=6>19</option>
-                <option value=7>21</option>
+                <option value=8>8</option>
+                <option value=10>9</option>
+                <option value=12>10</option>
+                <option value=14 selected>11</option>
+                <option value=16>12</option>
+                <option value=18>14</option>
+                <option value=21>18</option>
+                <option value=27>24</option>
+                <option value=33>30</option>
+                <option value=39>36</option>
+                <option value=51>48</option>
+                <option value=63>60</option>
+                <option value=75>72</option>
+                <option value=99>96</option>
             </select>
         </label>
+        <button onclick="controls.increaseFontSize()">increase_font_size</button>
+        <button onclick="controls.decreaseFontSize()">decrease_font_size</button>
     </div>
 
     <div id="text-decoration">
@@ -98,7 +103,8 @@
                 <option value="#ffa500">Orange</option>
                 <option value="#00ff00">Green</option>
             </select>
-        </label>    
+        </label> 
+        <button onclick="controls.wordCount()">word_count</button>   
     </div>
 
     <div>
