@@ -3,9 +3,11 @@ const writingArea = document.querySelector('#writing-area');
 const controls={
 undo() {
      document.execCommand('undo', false, null);
+    returnFocus();
 },
 redo() {
     document.execCommand('redo', false, null);
+    returnFocus();
 },
 print() {
     window.print();
@@ -64,29 +66,65 @@ changeFontFamily() {
 },
 alignLeft() {
     document.execCommand('justifyLeft',false, null);
+    returnFocus();
 },
 alignCenter() {
     document.execCommand('justifyCenter',false, null);
+    returnFocus();
 },
 alignRight() {
     document.execCommand('justifyRight',false, null);
+    returnFocus();
 },
 alignJustify() {
     document.execCommand('justifyFull', false, null);
+    returnFocus();
 },
 insertTable(){
     document.execCommand('enableInlineTableEditing', false, null);
 },
 changeFontSize() {
     const value = document.getElementById('font-size').value;
+    const selectedRange = document.getSelection().getRangeAt(0);
+
     const span = document.createElement("span");
     span.style.fontSize = `${value}px`;
+
+    let startingNode = selectedRange.startContainer;
+    let startIndex = selectedRange.startOffset;
+    let endingNode = selectedRange.endContainer;
+    let endIndex = selectedRange.endOffset;
+    let nodes = [];
+
+    let string = '';
+    if(startingNode.parentNode.parentNode.id === 'writing-area' && 
+       endingNode.parentNode.parentNode.id === 'writing-area'){
+        string = startingNode.textContent.slice(startIndex, endIndex)
+        let span = document.createElement("span");
+        span.innerHTML = string;
+        span.style.fontSize = `${value}px`;
+        console.log(span)
+    }
+
+    let startingString = '';
+    let endingString = '';
+    if(startingNode.parentNode !== endingNode.parentNode){
+        startingString = startingNode.textContent.slice(startIndex);
+        endingString = endingNode.textContent.slice(0, endIndex)
+    }
+
+    console.log(string)
+    console.log(startingString);
+    console.log(endingString);
+    console.log(selectedRange)  
+
+
+    // var sel = window.getSelection();
+    // var range = sel.getRangeAt(0);
+    // sel.removeAllRanges();
+    // range.surroundContents(span);
+    // sel.addRange(range);
     
-    var sel = window.getSelection();
-    var range = sel.getRangeAt(0).cloneRange();
-    sel.removeAllRanges();
-    range.surroundContents(span);
-    sel.addRange(range);
 },
 increaseFontSize(){
     const span = document.createElement("span");
@@ -126,16 +164,13 @@ changeHighlightingColor() {
 },
 wordCount(){
     const text = writingArea.textContent;
-    const arrayOfWords = text.split(' ');
-    let count = 0
+    const words = text.match(/[a-z]+/gi);
+    const character = text.match(/[^a-z0-9]/gi);
+    const characterWithoutSpace = text.match(/[^a-z0-9 ]/gi);
 
-    for(var i = count; i<arrayOfWords.length; i++){
-        if(arrayOfWords[i].trim().length !== 0){
-            count++
-        }
-    }
-
-    alert('You have '+ count + ' words in paper.')
+    alert(`Words ${words.length}
+Character ${character.length}
+Characters excluding spaces ${characterWithoutSpace.length}`)
 },
 insertOrderedList() {
     document.execCommand('insertOrderedList', false, null);
@@ -170,7 +205,9 @@ insertImage() {
 },
 lineSpacing() {
     const lineSpace = document.getElementById('lineSpacing').value;
-    writingArea.style.lineHeight = lineSpace;
+    
+    extractNodes().forEach(node => node.style.lineHeight = lineSpace)
+
 },
 save() {
     const savingContent = writingArea.innerHTML;
@@ -204,10 +241,14 @@ insertTable() {
     
     writingArea.appendChild(table);
 },
+paintFormat(){
+    let selection = document.getSelection().getRangeAt(0);
+    selection.style.fontSize = '34px';
+},
 getContent() {
     writingArea.innerHTML = localStorage.getItem('myItems');
-    writingArea.style.fontSize = `14px`;
-    writingArea.style.fontFamily = `Arial`;
+    // writingArea.style.fontSize = `14px`;
+    // writingArea.style.fontFamily = `Arial`;
 }
 
 }
@@ -219,7 +260,7 @@ const utilFunctions = {
             a[i].setAttribute("contenteditable", false);    
         }
     },
-    setCaratTo(contentEditableElement, position) {
+    setCarotTo(contentEditableElement, position) {
         var range,selection;
         if(document.createRange) {
             range = document.createRange();
@@ -233,23 +274,88 @@ const utilFunctions = {
             selection.removeAllRanges();
             selection.addRange(range);
         }
+     }  
+}
+
+function extractNodes(){
+    const startingNode = document.getSelection().anchorNode.parentNode;
+    const endingNode = document.getSelection().focusNode.parentNode;
+    const nodes = [];
+
+    addNodes(endingNode, nodes)
+
+    let mainEndingNode = nodes.filter(node => node.parentNode.id === 'writing-area');
+
+    addNodes(startingNode, nodes, mainEndingNode[0])  
+
+    console.log(nodes);
+    return nodes;
+}
+
+function addNodes(node, nodes, endingNode){
+
+    if(node.parentNode.id === 'writing-area'){
+        // console.log(node.parentNode.nodeName)
+
+        addChildren(node, nodes);
+
+        nodes.push(node);
+
+        let nodesOfMainDiv = node.parentNode.children;
+
+        if(endingNode && node !== endingNode){
+            for(let i = 0; i<nodesOfMainDiv.length; i++){
+                if(nodesOfMainDiv[i] === node){
+                    addNextSibling(node, endingNode, nodes);
+                    break;
+                }
+
+                if(nodesOfMainDiv[i] === endingNode){
+                    addPreviousSibling(node, endingNode, nodes);
+                    break;
+                }
+            }
+        }
+
+    }else{
+        addNodes(node.parentNode, nodes, endingNode);
     }
 }
 
-let countSpace = 0;
-
-writingArea.addEventListener('keyup', function(e) {
-    if(countSpace < 1){
-        if(e.which === 32){
-            let string = writingArea.textContent;
-            writingArea.innerText = string.charAt(0).toUpperCase() + string.slice(1);
-
-            utilFunctions.setCaratTo(writingArea, writingArea.textContent.length)
-            countSpace++;        
+function addChildren(node, nodes){
+    if(node.children.length > 0){
+        for(let i = 0; i<node.children.length; i++){
+            nodes.push(node.children[i])
+            addChildren(node.children[i], nodes);
         }
     }
+}
+
+
+function addNextSibling(startingNode, endingNode, nodes){
+    if(startingNode.nextSibling && endingNode !== startingNode && startingNode.nextSibling !== endingNode){
+        addChildren(startingNode.nextSibling, nodes);
+
+        nodes.push(startingNode.nextSibling);
+
+        addNextSibling(startingNode.nextSibling, endingNode, nodes);
+    }
     
-})
+}
+
+function addPreviousSibling(startingNode, endingNode, nodes){
+    if(startingNode.previousSibling && startingNode !== endingNode && startingNode.previousSibling !== endingNode){
+        addChildren(startingNode.previousSibling, nodes);
+        
+        nodes.push(startingNode.previousSibling)
+
+        addPreviousSibling(startingNode.previousSibling, endingNode, nodes);
+    }
+}
+
+function returnFocus(){
+    writingArea.focus();
+}
  
 
 
